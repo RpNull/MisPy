@@ -1,4 +1,4 @@
-# FirePy
+# MispPy
 Query FireEye API for MISP ingestion.
 Basic pythonic implementation for querying the FireEye Intelligence api for automated MISP injestion.
 
