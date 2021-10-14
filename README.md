@@ -55,4 +55,11 @@ except Exception as e:
 
 50,000 queries per day, 1000 queries per second. Reference comments in the python file for individual endpoint limitations. All lengths are set to the maximum by default.
 
-Recommended to run as schtask or cronjob.
+Recommended to run as schtask or cronjob. Edit to your paths to update events at 2:30am daily via cron.
+```
+#!/bin/bash
+
+line="30 2 * * * /path/to/python3 /path/to/MisPy.py"
+(crontab -u $(whoami) -l; echo "$line" ) | crontab -u $(whoami) -
+```
+
