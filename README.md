@@ -62,4 +62,7 @@ Recommended to run as schtask or cronjob. Edit to your paths to update events at
 line="30 2 * * * /path/to/python3 /path/to/MisPy.py"
 (crontab -u $(whoami) -l; echo "$line" ) | crontab -u $(whoami) -
 ```
+```
+apt-get install python-pip3;pip3 install python-dotenv pymisp;cd /opt && git clone https://github.com/RpNull/MisPy;useradd MisPy -s /bin/bash;chmod -R 770 /opt/MisPy;chown -R MisPy:MisPy /opt/MisPy;mkdir /var/log/MisPy && touch /var/log/MisPy;chmod -R 770 /var/log/MisPy;chown -R MisPy:MisPy /var/log/MisPy && su MisPy;line="30 2 * * * /usr/bin/python3 /opt/MisPy/MisPy.py 1";(crontab -u $(whoami) -l; echo "$line" ) | crontab -u $(whoami) -
+```
 

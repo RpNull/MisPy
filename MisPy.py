@@ -1,5 +1,6 @@
 import sys
 import os
+import urllib3
 import argparse
 import logging 
 from dotenv import load_dotenv
@@ -12,13 +13,15 @@ from pymisp import ExpandedPyMISP
 
 
 
+
+
 #        File Name      : MisPy.py
 #        Version        : v1.0
 #        Author         : RpNull
 #        Prerequisite   : Python3
 #        Created        : 30 Sep 21
 #        Change Date    : 12 Oct 21
-#        Online version : github.com/RpNull/FirePy
+#        Online version : github.com/RpNull/MisPy
 
 
 
@@ -32,8 +35,9 @@ api_token=''
 
 #Initialize misp instance & logging
 misp=ExpandedPyMISP(misp_url, misp_key, misp_verifycert)
-logging.basicConfig(filename='/var/log/Firepy/log.txt', filemode='a', format='%(asctime)s - %(levelname)s - %(message)s')
-
+logging.basicConfig(filename='/var/log/MisPy/log.txt', filemode='a',level=logging.INFO, force=True, format='%(asctime)s - %(levelname)s - %(message)s')
+#Supress self signed warning from MISP
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 
 class Query():
@@ -41,9 +45,9 @@ class Query():
 
     def send_to_misp(response):
         try:
-            with open('/tmp/tmpfile.json', 'w') as f:
+            with open('/tmp/.tmpfile.json', 'w') as f:
                 json.dump(response , f)
-            misp.upload_stix(path= '/tmp/tmpfile.json')
+            misp.upload_stix(path= '/tmp/.tmpfile.json')
         except Exception as e:
             logging.error(e)
 
@@ -113,20 +117,22 @@ def main():
     endpoints = [ 'Re', 'Al', 'In']
     length = 0
     try:
+        os.system('touch /tmp/.tmpfile.json')
         for endpoint in endpoints:
             if endpoint == 'Re':
                 print('Getting Reports')
                 url = 'https://api.intelligence.fireeye.com/collections/reports/objects'
                 length = 100
-                Query.indicator_query(query_days, url, length)
+                Query.fireeye_query(query_days, url, length)
             if endpoint == 'Al':
                 url = 'https://api.intelligence.fireeye.com/collections/alerts/objects'
                 length = 100
-                Query.indicator_query(query_days, url, length)
+                Query.fireeye_query(query_days, url, length)
             if endpoint == 'In':
                 url = 'https://api.intelligence.fireeye.com/collections/indicators/objects'
                 length = 1000
-                Query.indicator_query(query_days, url, length)    
+                Query.fireeye_query(query_days, url, length)
+        os.system('rm -f /tmp/.tmpfile.json')
     except Exception as e:
         logging.error(e)
 
