@@ -5,7 +5,7 @@ Basic pythonic implementation for querying the FireEye Intelligence api for auto
 
 ## Leverages:
 
-  [FireEye Intel APIv3](https://api.intelligence.fireeye.com/docs#introduction-intel-apiv3)
+  [FireEye Intel APIv3](https://api.intelligence.fireeye.com/docs#introduction-intel-apiv3)\
   [MISP](https://www.misp-project.org/documentation/)
 
 ## Requires:
