@@ -45,9 +45,7 @@ class Query():
 
     def send_to_misp(response):
         try:
-            with open('/tmp/.tmpfile.json', 'w') as f:
-                json.dump(response , f)
-            misp.upload_stix(path= '/tmp/.tmpfile.json')
+            misp.upload_stix(data=response)
         except Exception as e:
             logging.error(e)
 
@@ -117,7 +115,6 @@ def main():
     endpoints = [ 'Re', 'Al', 'In']
     length = 0
     try:
-        os.system('touch /tmp/.tmpfile.json')
         for endpoint in endpoints:
             if endpoint == 'Re':
                 print('Getting Reports')
@@ -132,7 +129,6 @@ def main():
                 url = 'https://api.intelligence.fireeye.com/collections/indicators/objects'
                 length = 1000
                 Query.fireeye_query(query_days, url, length)
-        os.system('rm -f /tmp/.tmpfile.json')
     except Exception as e:
         logging.error(e)
 
